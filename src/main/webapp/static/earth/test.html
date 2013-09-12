@@ -3,18 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Test</title>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?key=AIzaSyAsrJ2XOZ_YpmMMNq73eAo3ZnFA-Sn7aOs"></script>
 <script type="text/javascript">
   var ge;
   google.load("earth", "1");
 
   function init() {
-    google.earth.createInstance('map3d', initCB, failureCB);
+    google.earth.createInstance('map3d', initCB, failureCB, {
+      'language' : 'zh' 
+    });
   }
 
   function initCB(instance) {
     ge = instance;
     ge.getWindow().setVisibility(true);
+
+    // add a navigation control
+    ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
+    //ge.getNavigationControl().setStatusBarVisibility(true);
+
+    ge.getOptions().setStatusBarVisibility(true);
+    
+    // add some layers
+    ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
+    /* ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true); */
+
+    // just for debugging purposes
+    document.getElementById('installed-plugin-version').innerHTML = ge.getPluginVersion().toString();
   }
 
   function failureCB(errorCode) {
@@ -25,5 +40,6 @@
 </head>
 <body>
   <div id="map3d" style="height: 400px; width: 600px;"></div>
+  <div id="installed-plugin-version"></div>
 </body>
 </html>
